@@ -1,0 +1,57 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Auto main",
+            "type": "python",
+            "request": "launch",
+            "program": "${config:start_file}",
+            "console": "integratedTerminal",
+            "autoReload": {
+                "enable": true
+            },
+            "justMyCode": true,
+            "args": [
+                "${config:target_fullpath}",
+                "${config:out_fullpath}",
+            ],
+        },
+        {
+            "name": "Python: Run main",
+            "type": "python",
+            "request": "launch",
+            "program": "${config:start_file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "${config:target_fullpath}",
+                "${config:out_fullpath}",
+            ],
+        },
+        {
+            "name": "Python: Run current",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        // {
+        //     "name": "Python: Debug",
+        //     "type": "python",
+        //     "request": "launch",
+        //     "program": "ob.py",
+        //     "console": "integratedTerminal",
+        //     "args": [
+        //         "e:\\prog\\Python\\vsext\\ms-python.python-2023.6.0\\pythonFiles\\lib\\python\\debugpy\\adapter/../..\\debugpy\\launcher",
+        //         "51850",
+        //         "--",
+        //         "ob.py"
+        //     ],
+        //     "justMyCode": true
+        // },
+    ]
+}

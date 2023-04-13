@@ -1,0 +1,58 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run obfuscator",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${file}"
+            ]
+        },
+        {
+            "label": "run x64dbg",
+            "type": "shell",
+            "command": "${config:x64dbg}",
+            "args": [
+                "\"${config:out_fullpath}\""
+            ]
+        },
+        {
+            "label": "echo var",
+            "type": "shell",
+            "command": "echo ${config:out_fullpath}",
+            "problemMatcher": [],
+            "group": {
+//                "kind": "build", // ctrl + shift + B
+                "isDefault": true
+            }
+        },
+        {
+            "label": "run 010 Editor",
+            "type": "shell",
+            "command": "${config:010_ed}",
+            "args": [
+                "${config:out_fullpath}"
+            ]
+        },
+        {
+            "label": "run hex Neo",
+            "type": "shell",
+            "command": "${config:hex_neo}",
+            "args": [
+                "\"${config:out_fullpath}\""
+            ]
+        },
+        {
+            "label": "fasm compile",
+            "type": "shell",
+            "command": "${config:fasm}",
+            "args": [
+                "${file}",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ]
+        }
+    ]
+}

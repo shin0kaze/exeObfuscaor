@@ -1,0 +1,36 @@
+{
+    "project": "${workspaceFolderBasename}",
+    "x64dbg": "E:\\prog\\x64dbg\\release\\x32\\x32dbg.exe",
+    "fasm": "E:\\prog\\fasm\\FASM.EXE",
+    "010_ed": "E:\\prog\\hexEd\\010Editor.exe",
+    "hex_neo": "E:\\prog\\hexNeo\\HexFrame.exe",
+    "ida_pro": "E:\\prog\\ida\\ida64.exe",
+    "target_name": "example",
+    "targetexe_name": "${config:target_name}.exe",
+    "out_name": "example-new",
+    "outexe_name": "${config:out_name}.exe",
+    "target_path": ".\\in\\",
+    "out_path": ".\\out\\",
+    "start_file": ".\\obfuscator\\main.py",
+    "target_fullpath": "${config:target_path}${config:targetexe_name}",
+    "out_fullpath": "${config:out_path}${config:outexe_name}",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/__pycache__": true
+    },
+    "explorerExclude.backup": {},
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./obfuscator",
+        "-p",
+        "*test.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true,
+}
