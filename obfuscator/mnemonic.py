@@ -17,9 +17,9 @@ def intersect(borders1, borders2):
     """Находит пересечение двух отрезков"""
     return (max(borders1[0], borders2[0]), min(borders1[1], borders2[1]))
 
-def mnem(mnemonic, operands = [], size=(1,3)):
+def mnem(mnemonic, operands = [], size=(1,3), ops_size=None):
     """Создает мнемонику, список комбинаций операндов сгрупированы в списки по их количеству"""
-    return {'mnem': mnemonic, 'ops_list': operands, 'borders':intersect(global_size, size)}
+    return {'mnem': mnemonic, 'ops_list': operands, 'borders':intersect(global_size, size), 'ops_size':ops_size}
 
 def get(mnem, ops_index=None, cur_size=None):
     """Возвращает название, размер, количество операндов, типы операндов, и 
@@ -42,16 +42,16 @@ def get(mnem, ops_index=None, cur_size=None):
         cur_ops = choice(ops)
         count = len(cur_ops.split(' '))
 
-    return {'mnem':mnem['mnem'], 'size':cur_size, 'ops_count':count, 'ops':cur_ops, 'combs':ops}
+    return {'mnem':mnem['mnem'], 'size':cur_size, 'ops_count':count, 'ops':cur_ops, 'combs':ops, 'ops_size':mnem['ops_size']}
 
-def random_bit(self, size):
+def random_bit(size):
     """Случайный бит для регистра указанной размерности"""
     max_bit = pow(2, 3 + size)
     return randrange(max_bit)
 
-def random_value(self, size):
+def random_value(size):
     """Случайное число указанной размерности"""
-    max_value = pow(256,size+1)-1
+    max_value = pow(256,size)-1
     return randrange(max_value)
 
 if __name__ == "__main__":

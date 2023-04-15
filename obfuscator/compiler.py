@@ -1,5 +1,6 @@
 from capstone import Cs, CS_ARCH_X86, CS_MODE_64, CS_MODE_32, CsError
-from keystone import Ks, KS_ARCH_X86, KS_MODE_64, KS_MODE_32
+from keystone import Ks, KS_ARCH_X86, KS_MODE_64, KS_MODE_32, KsError
+import logging
 
 F32 = 0xffff_ffff
 OFFS = 0x0040_0000
@@ -80,3 +81,17 @@ class Compiler(object):
         return self.disi(self.asm(op_str), eoc, offset)
 
 c = Compiler()
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG, filename="py_log.log",filemode="a",
+                    format="%(asctime)s %(levelname)s %(message)s")
+    logging.getLogger().addHandler(logging.StreamHandler())
+    logging.debug('hello')
+    asm_str = 'imul 100005385\n'
+    instruction = Inst('jc', '4')
+    print(c.asmu(instruction))
+    try:
+        print(c.ks.asm(asm_str))
+    except KsError as ex:
+        logging.error('KsError:%s'%(ex), exc_info=True)    
+    
