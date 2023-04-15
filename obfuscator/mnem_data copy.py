@@ -1,21 +1,18 @@
+from mnemonic import mnem
 
-
-#b - 1 byte
-#w - 2 bytes
-#d - 4 bytes
-#q - 8 bytes
-#x - 16 bytes
-#y - 32 bytes
-#z - 64 bytes
-#a - any
-
+rm_rmi = [['r i','r m', 'r r', 'm r', 'm i']]
+r_rm = [['r r', 'r m']]
+rm_rl = [['r r', 'm r', 'r l', 'm l']]
+r_rmi = [['r r', 'r m', 'r i']]
+r_r = [['r r']]
+r = [['r']]
 mnemonics = [
 # https://www.strchr.com/x86_machine_code_statistics
 # frequency, mnemonic, possible args, possible next instruction
-    [10, "add", # Add two values. 8
-        ["r i","r m", "m r", "r r"]],  
-    [1, "adc", # Add with carry.
-        ["r i","r m", "m r", "r r"]],  
+    [10, # Add two values.
+        mnem('add', rm_rmi)] 
+    [1, # Add with carry.
+    mnem('adc', rm_rmi)],  
     [2, "and", # Logical and.
         ["r i","r m", "m r", "r r"]],
     [1, "bsf", # Bit scan forward. 1 op get number, 2 op scan for bits. If 0 only, then ZF = 1

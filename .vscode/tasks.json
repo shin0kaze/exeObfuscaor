@@ -9,20 +9,21 @@
             "command": "python",
             "args": [
                 "${file}"
-            ]
+            ],
+            
         },
         {
             "label": "run x64dbg",
             "type": "shell",
             "command": "${config:x64dbg}",
             "args": [
-                "\"${config:out_fullpath}\""
+                "\"${config:out_abspath}\"" //${config:out_fullpath}
             ]
         },
         {
             "label": "echo var",
             "type": "shell",
-            "command": "echo ${config:out_fullpath}",
+            "command": "echo ${config:out_abspath}",
             "problemMatcher": [],
             "group": {
 //                "kind": "build", // ctrl + shift + B

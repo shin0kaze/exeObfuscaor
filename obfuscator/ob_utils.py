@@ -103,6 +103,7 @@ class Obfuscator:
 
     def shuffle(self):
         self.llist_cb.shuffle()
+        pass
 
 
     def get_ep(self):

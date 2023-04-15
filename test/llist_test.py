@@ -1,4 +1,4 @@
-from llist import LList, Node
+from obfuscator.llist import LList, Node
 import unittest
 
 def assertLinkedList(lst, array):

@@ -14,6 +14,7 @@
     "start_file": ".\\obfuscator\\main.py",
     "target_fullpath": "${config:target_path}${config:targetexe_name}",
     "out_fullpath": "${config:out_path}${config:outexe_name}",
+    "out_abspath": "${workspaceFolder}\\${config:out_path}${config:outexe_name}",
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -27,7 +28,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./obfuscator",
+        "./test",
         "-p",
         "*test.py"
     ],
