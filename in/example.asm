@@ -1,6 +1,6 @@
 format          PE console 4.0      ; PE формат
 entry           start               ; Адрес начала исполнения
-include         'win32a.inc'        ; библиотеки х32
+include         '%fasminc%/win32a.inc'        ; библиотеки х32
  
 ; ---=/ Код программы \=---
  

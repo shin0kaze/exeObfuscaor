@@ -19,14 +19,6 @@ ob.calculate_jump_addr()
 ob.print_cb()
 ob.print_cbcf()
 
-#llist_cb.shuffle()
-
-# add_jumps(llist_cb)
-# add_garbage(llist_cb)
-# calculate_addr_of_blocks(llist_cb)
-# calculate_jump_addr(llist_cb)
-# print_cb(llist_cb)
-#print_cbcf(llist_cb)
 rw.set_eop(ob.get_ep())
 rw.write(output, ob.llist_cb)
 

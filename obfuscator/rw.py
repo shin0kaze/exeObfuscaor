@@ -1,4 +1,5 @@
 import pefile
+import logging as lg
 
 class Rw():
     
@@ -35,6 +36,7 @@ class Rw():
         #print(flat_code)
         self.pe.set_bytes_at_rva(self.eop, bytes(flat_code))
         #print(self.code_section.get_data(self.eop, self.code_section.SizeOfRawData))
+        lg.info('result written at:%s'%(file_path))
         print('result written at:%s'%(file_path))
         self.pe.write(filename=file_path)
 

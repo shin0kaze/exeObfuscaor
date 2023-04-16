@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "run obfuscator",
+            "label": "run py current",
             "type": "shell",
             "command": "python",
             "args": [
@@ -13,11 +13,36 @@
             
         },
         {
+            "label": "run obfuscator",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${config:start_file}",
+                "${config:target_fullpath}",
+                "${config:out_fullpath}",
+            ],
+            "group": {
+                "kind": "build", // ctrl + shift + B
+                "isDefault": true
+            }
+            
+        },
+        {
+            "label": "Run target exe",
+            "type": "shell",
+            "command": "${config:target_abspath}",
+        },
+        {
+            "label": "Run out exe",
+            "type": "shell",
+            "command": "${config:out_abspath}",
+        },
+        {
             "label": "run x64dbg",
             "type": "shell",
             "command": "${config:x64dbg}",
             "args": [
-                "\"${config:out_abspath}\"" //${config:out_fullpath}
+                "\"${config:out_abspath}\""
             ]
         },
         {
@@ -25,10 +50,6 @@
             "type": "shell",
             "command": "echo ${config:out_abspath}",
             "problemMatcher": [],
-            "group": {
-//                "kind": "build", // ctrl + shift + B
-                "isDefault": true
-            }
         },
         {
             "label": "run 010 Editor",
@@ -48,12 +69,15 @@
         },
         {
             "label": "fasm compile",
+            //     "env": { Don't work on windows!
+            //     "Include":"E:\\prog\\fasm\\INCLUDE"
+            // },
             "type": "shell",
             "command": "${config:fasm}",
             "args": [
                 "${file}",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ]
-        }
+        },
     ]
 }

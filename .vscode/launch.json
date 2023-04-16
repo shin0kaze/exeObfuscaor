@@ -39,19 +39,5 @@
             "console": "integratedTerminal",
             "justMyCode": true
         },
-        // {
-        //     "name": "Python: Debug",
-        //     "type": "python",
-        //     "request": "launch",
-        //     "program": "ob.py",
-        //     "console": "integratedTerminal",
-        //     "args": [
-        //         "e:\\prog\\Python\\vsext\\ms-python.python-2023.6.0\\pythonFiles\\lib\\python\\debugpy\\adapter/../..\\debugpy\\launcher",
-        //         "51850",
-        //         "--",
-        //         "ob.py"
-        //     ],
-        //     "justMyCode": true
-        // },
     ]
 }

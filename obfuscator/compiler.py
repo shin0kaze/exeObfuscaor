@@ -84,7 +84,7 @@ c = Compiler()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, filename="py_log.log",filemode="a",
-                    format="%(asctime)s %(levelname)s %(message)s")
+                    format="%(asctime)s %(levelname)s %(filename)s:%(funcName)s %(message)s")
     logging.getLogger().addHandler(logging.StreamHandler())
     logging.debug('hello')
     asm_str = 'imul 100005385\n'
