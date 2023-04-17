@@ -46,6 +46,14 @@
             ]
         },
         {
+            "label": "run x64dbg target",
+            "type": "shell",
+            "command": "${config:x64dbg}",
+            "args": [
+                "\"${config:target_abspath}\""
+            ]
+        },
+        {
             "label": "echo var",
             "type": "shell",
             "command": "echo ${config:out_abspath}",

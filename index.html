@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Демонстрация exe обфускатора">
+	<meta name="author" content="Moskalew K. N.">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Презентация</title>
+
+	<link rel="stylesheet" href="reveal/reset.css">
+	<link rel="stylesheet" href="reveal/reveal.css">
+	<link rel="stylesheet" href="reveal/theme/black.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="reveal/plugin/highlight/monokai.css">
+</head>
+<style>
+	.multicol {
+		display: table;
+		table-layout: fixed;
+		width: 100%;
+		text-align: left;
+	}
+
+	.col {
+		display: table-cell;
+		vertical-align: top;
+		width: 50%;
+		padding: 2% 0 2% 3%;
+	}
+</style>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+
+
+			<!-- -===/ SLIDE \===- -->
+
+
+			<section>
+				<h1>Демонстрация exe обфускатора</h1>
+				<p style="text-align: right;">
+					<br>
+					<small>Выполнил студент группы ЧЧЧЧЧЧЧЧЧ <br> <a href="https://github.com/shin0kaze">Москалев К. Н.
+							(shin0kaze)</a></small>
+				</p>
+			</section>
+
+
+			<!-- -===/ SLIDE \===- -->
+
+
+			<section>
+				<h3>Что такое обфускация?</h3>
+				<p>
+					Обфуска́ция (от лат. obfuscare — затенять, затемнять; и англ. obfuscate — делать неочевидным,
+					запутанным, сбивать с толку) или запутывание кода — приведение исходного кода или исполняемого кода
+					программы к виду, сохраняющему её функциональность, но затрудняющему анализ, понимание алгоритмов
+					работы и модификацию при декомпиляции.
+				</p>
+				<aside class="notes">
+					Обфускация, это способ сокрытия данных и алгоритма от злоушыленника при получении доступа к
+					конечному файлу или исходникам.
+					Важно помнить, что не существует способа сделать обфускацию необратимой, но вполне можно сделать её
+					не выгодной по затраченным усилиям.
+				</aside>
+			</section>
+
+
+			<!-- -===/ SLIDE \===- -->
+
+
+			<section>
+				<h3>Почему именно exe и python?</h3>
+				<p>Какие преимущества и трудности.</p>
+				<div class='multicol' style="font-size: 18pt;">
+					<div class='col'>
+						Преимущества 💪:
+						<ul>
+							<li>Больше возможностей для запутывания.</li>
+							<li>Поддержка вне зависимости от языка.</li>
+							<li>Возможность контроллировать процесс.</li>
+							<li>Keystone - одно из лучших решений реверса.</li>
+							<li>Легкий и наглядный концепт, который легко развить до реального решения.</li>
+						</ul>
+					</div>
+					<div class='col'>
+						Недостатки ❌:
+						<ul>
+							<li>Python не самое быстрый язык программирования из коробки.</li>
+							<li>Нужно точно вычислять адресс прыжков.</li>
+							<li>Нужно уметь читать разные варианты PE структуры.</li>
+							<li>Требует базового понимания реверсинга.</li>
+						</ul>
+					</div>
+				</div>
+				<aside class="notes">
+				</aside>
+			</section>
+
+
+			<!-- -===/ SLIDE \===- -->
+
+
+			<section>
+				<h3>Использованные инструменты</h3>
+				<ul>
+					<li>Pefile - Парсер и редактор PE структуры исполняемого файла.</li>
+					<li>Keystone\Capstone - Компилятор и дизассемблер с API.</li>
+					<li>FASM - удобный язык ассемблера и компилятор.</li>
+					<li>x64dbg - Современный дебаггер</li>
+					<li>010 Editor\ Hex Neo - Hex редакторы</li>
+					<li>IDA pro - мощный инструмент для реверсинга</li>
+				</ul>
+				<aside class="notes">
+				</aside>
+			</section>
+
+
+			<!-- -===/ SLIDE \===- -->
+
+
+			<section>
+				<h3>Структура</h3>
+				<div class="mermaid">
+					<pre style="white-space: pre-line">
+					%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
+					sequenceDiagram
+						participant RW as RW (Pefile)
+						participant CS as Capstone
+						participant OB as Обфускатор
+						participant IG as ㅤIG Генератор, Keystoneㅤ
+					
+						RW ->> CS: Читает структуру PE, возвращает адрес .text
+						activate OB
+						CS ->>+OB: Дизассемблирует инструкции
+						Note over OB:ㅤГруппирует инструкции в блоки кодаㅤ
+						Note over OB:ㅤЗаполняет двусвязный список: LListㅤ
+						Note over OB:ㅤПеремешивает блоки, вставляет jmpㅤ
+						OB ->> IG: 
+						activate IG
+						Note over IG:ㅤГенерирует код с помощью словаряㅤ
+						Note over IG:ㅤКомпилирует код (Keystone)ㅤ
+						IG ->> OB: 
+						deactivate IG
+						Note over OB:ㅤВычисляет адреса блоковㅤ
+						Note over OB:ㅤОбновляет адреса jmpㅤ
+						OB ->> RW: 
+						deactivate OB
+						Note over RW:ㅤОбновляет структуру файла
+						Note over RW:ㅤСохраняет результатㅤ
+					</pre>
+				</div>
+				<aside class="notes">
+				</aside>
+			</section>
+
+
+			<!-- -===/ SLIDE \===- -->
+
+
+			<section>
+				<h3>Генерация кода</h3>
+				<pre data-id="code-animation" style="font-size:12pt"><code class="hljs python" data-trim data-line-numbers>
+					# mnemData.py ...
+					[10, # Add two values.
+						mnem('add', rm_rmi)], 
+					[1, # Add with carry. 
+						mnem('adc', rm_rmi)], 
+					[2, # Logical and.
+						mnem('and', rm_rmi)], 
+					[1, # Bit scan forward. 1 op get number, 2 op scan for bits. If 0 only, then ZF = 1
+						mnem('bsf', r_rm, (2, 3))],  
+					[1, # Bit scan reverse.
+						mnem('bsr', r_rm, (2, 3))],  
+					[1, # Bit test. 1 op from take the bit, 2 op number of bit. CF have the value of that bit. 
+						mnem('bt', rm_rl, (2, 3))],   # "mw l" for 4
+				</code></pre>
+				<pre data-id="code-animation" style="font-size:12pt"><code class="hljs python" data-trim data-line-numbers>
+					# instGenerator.py ...
+					def make_inst(self) -> Inst | None:
+						"""Создает инструкцию"""
+						mnem_data = choose_inst(self.insts, self.probs)
+						ops = self.make_args(mnem_data['ops'], mnem_data['size'], mnem_data['ops_size'])
+						instruction = Inst(mnem_data['mnem'], ops)
+						try:
+							instruction_updated = self.c.asmu(instruction)
+						except KsError as ex:
+							lg.error('KsError:%s'%(ex), exc_info=True)
+							return None
+						return instruction_updated
+				</code></pre>
+				<aside class="notes">
+				</aside>
+			</section>
+
+
+			<!-- -===/ SLIDE \===- -->
+
+
+			<section>
+				<h3>Двойной связный список</h3>
+				<br>
+				<div class="mermaid">
+					<pre style="white-space: pre-line">
+					%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
+					classDiagram
+						direction RL
+						note for CodeBlock_3 "Блок мусорного кода, который не будет вызван."
+						note for CodeBlock_2 "Прыжок указывает на 4 блок"
+						note for CodeBlock_5 "Прыгает дальше по списку"
+						class CodeBlock_5 {
+							next: CB_06
+							prev: CB_04
+							next_code: CB_09
+							bytes: '\xe9\x8b\x00\x00...'
+							addr: 149
+							size: 5
+							cb_id: cb2.j
+							has-jump: True
+							code:
+							jmp 173; ()
+						}
+						class CodeBlock_4 {
+							next: CB_05
+							prev: CB_03
+							next_code: CB_05
+							bytes: '\x15\x4c\x30\x40...'
+							addr: 144
+							size: 5
+							cb_id: cb2
+							has-jump: False
+							code:
+							call dword [0x403058]; ()
+						}
+						class CodeBlock_3 {
+							next: CB_04
+							prev: CB_02
+							next_code: None
+							bytes: 'f\xf7\xf9\x90\x05...'
+							addr: 130
+							size: 14
+							cb_id: cb1
+							has-jump: False
+							code:
+							idiv cx; ()
+							nop; ()
+							push bx; ()
+						}
+						class CodeBlock_2 {
+							next: CB_03
+							prev: CB_01
+							next_code: CB_04
+							bytes: '\xe9\x8b\x00\x00...'
+							addr: 11
+							size: 5
+							cb_id: cb0.j
+							has-jump: True
+							code:
+							jmp 144; ()
+						}
+						class CodeBlock_1 {
+							next: CB_02
+							prev: None
+							next_code: CB_02
+							bytes: 'f\xf7\x13f\xb8...'
+							addr: 0
+							size: 11
+							cb_id: cb0
+							has-jump: False
+							code:
+							not word ptr [ebx]; ()
+							mov ax, 5; ()
+							mov ax, 0xfc04; ()
+						}
+						CodeBlock_4 <|-- CodeBlock_5
+						CodeBlock_5 <|-- CodeBlock_4
+						CodeBlock_3 <|-- CodeBlock_4
+						CodeBlock_4 <|-- CodeBlock_3
+						CodeBlock_2 <|-- CodeBlock_3
+						CodeBlock_3 <|-- CodeBlock_2
+						CodeBlock_1 <|-- CodeBlock_2
+						CodeBlock_2 <|-- CodeBlock_1
+					</pre>
+				</div>
+				<aside class="notes">
+				</aside>
+			</section>
+
+
+			<!-- -===/ SLIDE \===- -->
+
+
+			<section>
+				<h5 style="text-shadow: 0 0 5px green, 0 0 25px green; color: rgb(102, 255, 0);">Время для демо!</h5>
+				<pre style="font-size: 7pt; font-weight: bold; font-style: italic; text-shadow: 0 0 5px lime, 0 0 15px green; color: rgb(102, 255, 0);">
+
+;==========================================================================================================================================================;
+;                                                                                                                                                          ;
+;                                                                                                                                                          ;
+;                                                                                   /Ab                                                                    ;
+;                                                                                  ##AAAA                                                                  ;
+;                                                                                  ##AAAAAb                                                                ;
+;                                            _%===\    %==-_                      ,####AAAAA                                                               ;
+;                              __           "      )db(     "                     ###  AAAAAAb                                                             ;
+;                           ,="  "==,               {}                          ,### AAAAAAAAAA                                                            ;
+;                          %#        \                                          ##  /AAAAAAAAAA\\        __,---,.__                                        ;
+;                  _.-===-_>##···    "==,                              Z~~~,       AAAAAAAA~~~~~~\\ ,n%#############\                                      ;
+;                 (·  ··      #····      \=,.,===._                     `~~~~~~~, /AAAA~~~~~~~~~~###################}          |                           ;
+;                (#·········    #····    ···  ··   )                        `~~~~~~~Z~~~~##№№№№№№№########54K2K0###/          ,+,                          ;
+;                (##··###···· ####·······##··###··· )                       __`~~~~\V##№№№№/////\*№№############/”         --+&#60;¤>+--                       ;
+;                 ( ####### ;\ ###########/\###### ;                       /##########№//// //”///\*№№№#######/”              `+`                          ;
+;                  "=____=="  "==______=="  "=___="                   _,-/###########W\///„__iJ_%№№№\/\*№#/”                   |                           ;
+;                                                                   /#########*///%"WYYYY№№„==7vфффA"\//\                                                  ;
+;                                                                 ,#######*////%WWWWYYYY№-". №9` VF7“\№//|                                                 ;
+;                                                               ,///////////%WWYYYYYY&]Y№  `""”   '№9 №//`                      ,g#v                       ;
+;                                                             /////////WWWWWYYYYYYYYYYYY№, ””  •  `"'/№/              ___     _MV`                         ;
+;                                                            ////WWWWYYYYYYYYYYYYYYYYYYYY№№\ ,~¬  _№№YYYY________,-=``   ``“““HZRYZTTIIIiiD                ;
+;                                                           &#60;//WY "YYYYYYYYYYYYYY####BBBBAnnA№#№№/    YY          ¦        ___HV$nCZ9ND                    ;
+;                                                            //  YYYYYYYYYYYYYYY#/BBBB›>§B&#60;kBBBnn    |       ________caiVF%”   VEmC7ND                     ;
+;                                                           `7/ YYYYYYYYYYYYYYY##BBBV::::”BBBBBnn    ____aiV/”                  VmGiJ                      ;
+;                         7\\\X\\\\,                            YYYYYYY “YYYY “|BBC::::”BBBBB##nnnnnn/”                                                    ;
+;              VVVVVVX\\\\\\\\\\\\\\\~,                          YYY'    YY  /"BBGGGGGGBBBB######                                                          ;
+;                VVVVVV\\\\\\\\\\\\\\\\\\                        Y"     '  _/,BBBVY**YV########/                                                           ;
+;                VVVVX\\\\\\VVVX\\\\\\\\\'                      `         /  BBBB":::::######'                                                             ;
+;                  VVVVX\\\\\\\\\\\\\\\\\\\                      __      / BBBB;:::::::####                                                                ;
+;                    VVXX\\\\\\VVVVX\\\\\\\\X              __  __\zETia_,\_BBBB:::::::;####                                                                ;
+;                    VVVVVVX\\\\\VVVVVVVVVX№===,           \##/ '    VF/`.   `":::::;BB####\                                                               ;
+;                      VVVVVVVVVVVVVVVVVVVV№№№№№№====,     _/`    .  SV             "BB######                                                              ;
+;                          VVVVVVVVVVVV       \№№№№№№№№№№a/        AV/     \___         \####\                                                             ;
+;                                                    V№v/`      ATTV|      ATFA\          \####                                                            ;
+;                                                     ,/     „AE/№№№№      )\#\VA\       …,|###|                                                           ;
+;                                                  _,/     ,A/\#####/      )|###\VAia  ,/@/####|                                                           ;
+;                                                „ia     jAV`  >####      //№№№№№№№№\iaai/#####                                                            ;
+;                                              A##\VAiadV     /#####     /”#######№№№№№№№####X№№№№№№WA                                                     ;
+;                                          __,########|      /#/"##/    /##############Л####   V№№№№№№№№№№№№№№№====A                                       ;
+;                                        Z##T  #######/      "  ,##    nn##########”     ##               V№№№№№№№№№№№№№№=========<                        ;
+;                                       |##  ####A##/          /##|   /######/  V        V                            `№№№№№№№W%`                          ;
+;                                       \#######|               <#i  j##                                                                                   ;
+;                                        X####V                  /VaJ###\                                                                                  ;
+;                                                                |######|                                                                                  ;
+;                                                                |######/                                                                                  ;
+;                                                              /T  ###T                                                                                    ;
+;                                                              | #####|                                                                                    ;
+;                                                              \######/                                                                                    ;
+;                                                                ````                                                                                      ;
+;                                                                                                                                                          ;
+;ћџ ЎўЈ¤Ґ¦§Ё©Є«¬­®Ї°±Ііґµ¶·ё№є»јЅѕїАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя>=-._وДاոלՠӆѻБا֑ԕӊՉӎЗϔӍלԺВϮЁӂكҗϤ؉׿ӟѱҬӃρןϷҘо ؗ٪ѹѫҼπׅϯׂ׿;ҵϫϹҋӸٝט;
+"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ЂЃ‚ѓ„…†‡€‰Љ‹ЊЌЋЏђ‘’“”•–—™љ›њ\>\\..ϋԕӂѩثӻԎפϫճӐԭԅѠԹ؋ҕԷժՙׄձעٲؾӷك֌;
+
+
+				</pre>
+				<aside class="notes">
+				</aside>
+			</section>
+
+
+		</div>
+	</div>
+
+	<script src="reveal/reveal.js"></script>
+	<script src="reveal/plugin/mermaid/mermaid.js"></script>
+	<script src="reveal/plugin/notes/notes.js"></script>
+	<script src="reveal/plugin/markdown/markdown.js"></script>
+	<script src="reveal/plugin/highlight/highlight.js"></script>
+
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [RevealMermaid, RevealMarkdown, RevealHighlight, RevealNotes]
+		});
+	</script>
+</body>
+
+</html>

@@ -4,7 +4,7 @@ from mnemData import gen_probs, choice_reg, choose_inst, ptr
 from mnemonic import random_bit, random_value
 import random
 import re
-import logging
+import logger as lg
 
 def randbool():
     return bool(random.getrandbits(1))
@@ -21,7 +21,7 @@ class InstructionGenerator:
         self.c = c
         self.probs, self.insts = gen_probs()
 
-    def build_op(self, optype, size):
+    def build_op(self, optype, size) -> str | None:
         """Создает операнд и адресацию к нему"""
         match optype:
                 case 'r': # Регистр
@@ -37,10 +37,11 @@ class InstructionGenerator:
                 case 'a': # 32bit Адрес
                     return '%s ptr [%s]'%(ptr(min(size, 2)),str(random_val_or_reg(size)))
                 case _:
-                    raise Exception('Non-existent operand')
+                    lg.error('Non existent operand <%s>' % optype)
+                    return None
 
 
-    def make_args(self, ops, size, ops_size = None):
+    def make_args(self, ops, size, ops_size = None) -> str:
         """Определяет аргументы для инструкции"""
         if len(ops) == 0:
             return ''
@@ -57,16 +58,16 @@ class InstructionGenerator:
 
         return ", ".join(result)
 
-    def make_inst(self):
+    def make_inst(self) -> Inst | None:
         """Создает инструкцию"""
         mnem_data = choose_inst(self.insts, self.probs)
-        #print(str(args) + ' from ' + result)
         ops = self.make_args(mnem_data['ops'], mnem_data['size'], mnem_data['ops_size'])
         instruction = Inst(mnem_data['mnem'], ops)
         try:
             instruction_updated = self.c.asmu(instruction)
         except KsError as ex:
-            logging.error('KsError:%s'%(ex), exc_info=True)
+            lg.error('KsError:%s'%(ex), exc_info=True)
+            return None
         return instruction_updated
 
     def genb(self, size_cap):
@@ -75,6 +76,7 @@ class InstructionGenerator:
         insts = []
         while cur_size < size_cap:
             inst = self.make_inst()
+            if
             insts.append(inst)
             cur_size += len(inst.bytes)
         return CodeBlock(insts)
@@ -100,49 +102,32 @@ class InstructionGenerator:
                 inst = self.c.asmu(inst)
                 insts.append(inst)
 
-        #op = '%s %s'%(compare, jump_type, where)
-        #bytes, count = self.c.asm('%s %s %s'%(compare, jump_type, OFFS))
         inst = Inst(jump_type, 4)
         inst = self.c.asmu(inst)
         inst.ops = where
         insts.append(inst)
-        return insts#(op_str, bytearray(bytes), count)
-        
-    
+        return insts
+
     def set_addr(self, cb, tar_addr, cur_addr = 0, def_offset = OFFS):
         """Обновляет адрес прыжка"""
-        pattern = re.compile(r"<.{3}>") #r'\*<.{3}>\*' 
-        #print(op_str)
+        pattern = re.compile(r"<.{3}>")
         match = re.search(pattern, cb.code)[0]
         address = def_offset
         match(match):
-            case '<rel>':
-                pass
-            case '<abs>':
-                pass
             case '<pos>':
-                print(cb.code)
-                print(tar_addr)
-                print(cur_addr)
-                address = str(tar_addr-cur_addr) #'0x%s'%((address + tar_addr).to_bytes(4, 'big').hex())
+                address = str(tar_addr-cur_addr)
                 new_op_str = re.sub(match, address, cb.code)
-                print(new_op_str)
                 assert cb.code != new_op_str
                 bytes, size = c.asm(new_op_str)
                 cb.bytes = bytes
                 cb.size = len(bytes)
                 cb.code = new_op_str
-                print('ta:%s ca:%s ta-ca:%s op_str:%s cb.b:%s'%(tar_addr, cur_addr, address, new_op_str, cb.bytes[-1]))
+                lg.debug('ta:%s ca:%s ta-ca:%s op_str:%s cb.b:%s'%(tar_addr, cur_addr, address, new_op_str, cb.bytes[-1]))
 
 ig = InstructionGenerator()
 
 if __name__ == "__main__":
     while True:
         print (ig.make_inst())
-    print (ig.make_inst())
-    print (ig.make_inst())
-    print (ig.make_inst())
-    print (ig.make_inst())
-    print (ig.make_inst())
 
 

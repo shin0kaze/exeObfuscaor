@@ -2,9 +2,11 @@ import sys
 from rw import rw
 from compiler import c
 from ob_utils import Obfuscator
+import logger
 
 target, output = sys.argv[1:]
 
+logger.init(is_debug=True)
 
 rw.read(target)
 code = rw.codedata()

@@ -3,6 +3,7 @@ from codeblock import CodeBlock
 from mnemonics import ig
 from numx import *
 import random
+from logger import is_debug, debug
 
 class Obfuscator:
 
