@@ -96,13 +96,6 @@ class Obfuscator:
                     cb.next_addr = cb.next.addr
                     ig.set_addr(cb, tar_addr, cb.addr)
 
-        for cb in self.llist_cb.forwardn():
-            if cb.is_need_to_calc_addr() > 0:
-                if (tar_addr := cb.next_code.addr) is not None:
-                    cb.code = ''.join(cb.old_code)
-                    ig.set_addr(cb, tar_addr, cb.addr)
-                    pass
-
     def calculate_jump_addr2(self):
         """вычисление адреса прыжков"""
         for cb in self.llist_cb.forwardn():
