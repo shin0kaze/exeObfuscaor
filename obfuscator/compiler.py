@@ -78,7 +78,7 @@ class Compiler(object):
 c = Compiler()
 
 if __name__ == "__main__":
-    asm_str = 'imul 100005385\n'
+    asm_str = 'jmp -125' #125 -> 129
     instruction = Inst('jc', '4')
     print(c.asmu(instruction))
     print(c.ks.asm(asm_str)) 
