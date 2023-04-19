@@ -52,9 +52,9 @@ class InstructionGenerator:
                 result.append(self.build_op(op, size+op_size))
         else:
             for op in ops.split(' '):
-                print('%s:%s'%(op, size))
+                #print('%s:%s'%(op, size))
                 result.append(self.build_op(op, size))
-                print(result[-1])
+                #print(result[-1])
 
         return ", ".join(result)
 

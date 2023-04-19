@@ -17,7 +17,7 @@ class Rw():
     def codedata(self):
         # AddressOfEntryPoint if guaranteed to be the first byte executed.
         self.eop = self.pe.OPTIONAL_HEADER.AddressOfEntryPoint
-        print('entry point is %s'%(self.eop))
+        #print('entry point is %s'%(self.eop))
         self.code_section = None
         for section in self.pe.sections:
             if section.contains_rva(self.eop):

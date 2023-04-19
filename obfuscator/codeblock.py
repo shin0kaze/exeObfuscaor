@@ -21,13 +21,10 @@ class CodeBlock(Node):
 
         if not (type(insts) is list):
             insts = [insts]
-        #print(insts)
+            
         for i in insts:
-            #print(i)
             self.code += i.c
             self.bytes.extend(i.bytes)
-            #print(i.bytes)
-        #print(self.bytes)
         # Размер данного Codeblock.
         self.size = len(self.bytes)
         # Поскольку наследуется от Node, имеет следующие свойства: 

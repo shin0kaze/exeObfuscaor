@@ -3,7 +3,7 @@ from codeblock import CodeBlock
 from instGenerator import ig
 from numx import *
 import random
-from logger import is_debug, debug
+import logger as lg
 
 class Obfuscator:
 
@@ -63,9 +63,9 @@ class Obfuscator:
         """Выводим Codeblocks в консоль"""
         for cb in self.llist_cb.forwardn():
             next_addr = cb.next_code.addr if cb.next_code else 'empty'
-            print("%s has addr:%s and size:%s and next:%s, has_jump:%s, bytes:%s"% (cb.cb_id, cb.addr, cb.size, next_addr, cb.is_need_to_calc_addr(), cb.bytes))
+            lg.debug("%s has addr:%s and size:%s and next:%s, has_jump:%s, bytes:%s"% (cb.cb_id, cb.addr, cb.size, next_addr, cb.is_need_to_calc_addr(), cb.bytes))
             if cb.is_need_to_calc_addr():
-                print(cb.code)
+                lg.debug(cb.code)
                 assert cb.code != 'jmp <pos>\n', 'JMP POS'
 
     def print_cbcf(self):
@@ -78,7 +78,7 @@ class Obfuscator:
                 diff = n_s(value=int(next_ca) - cb.addr, size=4) if next_ca != 'none' else 'nan'
                 lb = cb.bytes[-1]
                 to = "lb:%s, ta:%s, ca:%s, ta-ca:%s"%(n_s(lb, 'ui'), next_ca, cb.addr, diff)
-            print("cb:%s -> cb:%s, %s"%(cb.cb_id, next_cb_id, to))
+            lg.debug("cb:%s -> cb:%s, %s"%(cb.cb_id, next_cb_id, to))
 
     def calculate_addr_of_blocks(self):
         """Подсчет адресов"""
@@ -90,17 +90,49 @@ class Obfuscator:
     def calculate_jump_addr(self):
         """вычисление адреса прыжков"""
         for cb in self.llist_cb.forwardn():
-            #print('called')
-            #print(cb.is_need_to_calc_addr())
             if cb.is_need_to_calc_addr() > 0:
                 if (tar_addr := cb.next_code.addr) is not None:
+                    cb.old_code = ''.join(cb.code)
+                    cb.next_addr = cb.next.addr
                     ig.set_addr(cb, tar_addr, cb.addr)
-                    lb = b_i(cb.bytes)
-                    tc = tar_addr - cb.addr
-                for_u = lb + 2 == tc
-                for_s = lb - 2 == tc
-                # assert for_u or for_s, 'not eq: lb+2 is %s, when ta-ca is %s'%(lb, tc)
-                # assert cb.code != 'jmp <pos>\n', 'JMP POS'
+
+        for cb in self.llist_cb.forwardn():
+            if cb.is_need_to_calc_addr() > 0:
+                if (tar_addr := cb.next_code.addr) is not None:
+                    cb.code = ''.join(cb.old_code)
+                    ig.set_addr(cb, tar_addr, cb.addr)
+                    pass
+
+    def calculate_jump_addr2(self):
+        """вычисление адреса прыжков"""
+        for cb in self.llist_cb.forwardn():
+            if cb.is_need_to_calc_addr() > 0:
+                if (tar_addr := cb.next_code.addr) is not None:
+                    cb.code = ''.join(cb.old_code)
+                    ig.set_addr(cb, tar_addr, cb.addr)
+
+
+    def check_bugs(self):
+        print('check')
+        bugs = True
+        while bugs:
+            self.calculate_addr_of_blocks()
+            for cb in self.llist_cb.forwardn():
+                if cb.size != len(cb.bytes):
+                    bugs = True
+                    lg.warning('bugs with addres found!')
+                    self.calculate_jump_addr2()
+                    continue
+                if hasattr(cb, 'next_addr'):
+                    if cb.next_addr != cb.next.addr:
+                        bugs = True
+                        lg.warning('bugs with addres found!!!')
+                        self.calculate_jump_addr2()
+                        continue
+                bugs = False
+
+
+
 
     def shuffle(self):
         self.llist_cb.shuffle()
