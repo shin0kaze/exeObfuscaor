@@ -4,6 +4,7 @@ import logger as lg
 class Rw():
     
     def read(self, file_path):
+        """Парсит структуру файла, и возвращает указатель на .text"""
         self.pe = pefile.PE(file_path)
         return self
     
@@ -25,9 +26,11 @@ class Rw():
         return data
     
     def set_eop(self, addr_offset):
+        """Устанавливает новую точку входа"""
         self.pe.OPTIONAL_HEADER.AddressOfEntryPoint = self.eop + addr_offset
 
     def write(self, file_path, llist_code):
+        """Записывает изменения в файл"""
         flat_code = bytearray()
 
         for node in llist_code.forwardn():

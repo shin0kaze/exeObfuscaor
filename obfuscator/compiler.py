@@ -11,13 +11,9 @@ class Inst():
         self.mnem = mnemonic
         self.ops = ops
         self.bytes = bytes
-        # self.size = size if size else len(bytes) if bytes else None
-        # self.addr = addr
-        # self.csid = id
     
     def get_inst(self):
         return '\t%s %s\t%s' % ( self.mnem, self.ops, self.bytes)
-        #return '%s\t0x%x:\t%s %s\t%s\t%s' % (self.csid, self.addr, self.mnem, self.ops, self.size, self.bytes)
 
     def __str__(self):    
         return '%s %s' % (self.mnem, self.ops)
@@ -63,14 +59,13 @@ class Compiler(object):
         for i in self.cs.disasm(bytes, offset): 
             if i.bytes == eoc:
                 return instructions
-            instructions.append(Inst(i.mnemonic, i.op_str, i.bytes)) # i.size, i.address, i.id
-            #print("%s::%s::%s"%(i.mnemonic, i.op_str, i.bytes))
+            instructions.append(Inst(i.mnemonic, i.op_str, i.bytes))
         return instructions
     
     def disi(self, bytes, offset=0x0):
         """Декомпилирует набор байтов, что бы получить Instruction"""
         i = next(self.cs.disasm(bytes, offset))
-        return Inst(i.mnemonic, i.op_str, i.bytes) # , i.size, i.address, i.id
+        return Inst(i.mnemonic, i.op_str, i.bytes)
     
     def asmdis(self, op_str, eoc=b'\00\00', offset=0x0):
         """Компилирует код, и сразу же разбирает на Instructions"""

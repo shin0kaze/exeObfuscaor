@@ -66,7 +66,4 @@ class CodeBlock(Node):
             prev.next_code = self
     
     def __str__(self):    
-        return "cb: " + self.code
-    
-    
-        
+        return "cb: " + self.code  

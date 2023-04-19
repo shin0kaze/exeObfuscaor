@@ -76,7 +76,8 @@ class InstructionGenerator:
         insts = []
         while cur_size < size_cap:
             inst = self.make_inst()
-            if
+            if inst is None:
+                continue
             insts.append(inst)
             cur_size += len(inst.bytes)
         return CodeBlock(insts)
@@ -86,6 +87,8 @@ class InstructionGenerator:
         insts = []
         for i in range(count):
             inst = self.make_inst()
+            if inst is None:
+                continue
             insts.append(inst)
         return CodeBlock(insts)
     

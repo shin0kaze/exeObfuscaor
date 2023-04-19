@@ -446,16 +446,6 @@ class LList:
         self.braze(new_els, new_ele,els, count_new)
         return old_nodes
 
-    # def t(self, node):
-    #     """"""
-    #     if node.next == None:
-    #         self.tail = node
-    #         return False
-    #     if node.prev == None:
-    #         self.head = node
-    #         return False
-    #     return True
-
     def o(self, *nodes):
         """Чинит ссылки"""
         for node in nodes:
@@ -488,20 +478,6 @@ class LList:
         shuffle(lst)
         self.clr()
         self.extendn(lst)
-        
-        
-
-
-
-        # if not count:
-        #     count = self.ind(els, ele)[1]
-        # if not count_new:
-        #     count_new = self.ind(new_els, new_ele)[1]
-        # self.count += count_new - count
-
-        # els.next, new_els.prev = new_els, els.next
-        # ele.prev, new_ele.next = new_ele, ele.prev
-        # return (els.next, ele.prev)
 
     def get_all(self):
         """Дает все данные списка"""
@@ -520,13 +496,7 @@ class LList:
         nodes_concat += ']'
         return nodes_concat
 
-
-        # curr=self.head
-        # curr_index=0
-        # while(curr and curr_index!=index):
-        #     curr_index+=1
-        #     curr=curr.next
-        # return curr.value if curr else None                
+        
 
 
 

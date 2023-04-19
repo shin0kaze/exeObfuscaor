@@ -1,7 +1,7 @@
 import sys
 from rw import rw
 from compiler import c
-from ob_utils import Obfuscator
+from obfuscator import Obfuscator
 import logger
 
 target, output = sys.argv[1:]
@@ -18,8 +18,6 @@ ob.add_jumps()
 ob.add_garbage()
 ob.calculate_addr_of_blocks()
 ob.calculate_jump_addr()
-ob.print_cb()
-ob.print_cbcf()
 
 rw.set_eop(ob.get_ep())
 rw.write(output, ob.llist_cb)
