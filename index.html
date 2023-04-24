@@ -11,10 +11,10 @@
 
 	<link rel="stylesheet" href="reveal/reset.css">
 	<link rel="stylesheet" href="reveal/reveal.css">
-	<link rel="stylesheet" href="reveal/theme/black.css">
+	<link rel="stylesheet" href="reveal/theme/white.css">
 
 	<!-- Theme used for syntax highlighted code -->
-	<link rel="stylesheet" href="reveal/plugin/highlight/monokai.css">
+	<link rel="stylesheet" href="reveal/plugin/highlight/a11y-light.min.css">
 </head>
 <style>
 	.multicol {
@@ -44,8 +44,16 @@
 				<h1>Демонстрация exe обфускатора</h1>
 				<p style="text-align: right;">
 					<br>
-					<small>Выполнил студент группы СИБ-941-ЗИ-01 <br> <a href="https://github.com/shin0kaze">Москалев К. Н.
-							(shin0kaze)</a></small>
+					<div class='multicol'>
+					<small>
+						<div class="col" style="width:500px">
+							Научный руководитель <br> к. ю. н., доцент <br> Горев А. И.
+						</div>
+						<div class="col" style="width:600px; text-align: right">
+						Выполнил студент группы <br> СИБ-941-ЗИ-01 <br> <a href="https://github.com/shin0kaze">Москалев К. Н.</a>
+						</div>
+					</small>
+					</div>
 				</p>
 				<aside class="notes">
 					Здравствуйте уважаемые дамы и господа, меня зовут Кирилл Москалев, тема моего проекта обфускация исполняемых exe файлов.
@@ -118,7 +126,7 @@
 				<h3>Структура</h3>
 				<div class="mermaid">
 					<pre style="white-space: pre-line">
-					%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
+					%%{init: {'theme': 'white', 'themeVariables': { 'darkMode': true }}}%%
 					sequenceDiagram
 						participant RW as RW (Pefile)
 						participant CS as Capstone
@@ -168,7 +176,7 @@
 						mnem('bsf', r_rm, (2, 3))],  
 					[1, # Bit scan reverse.
 						mnem('bsr', r_rm, (2, 3))],  
-					[1, # Bit test. 1 op from take the bit, 2 op number of bit. CF have the value of that bit. 
+					[1, # Bit test. 1 op from take the bit, 2 op number of bit. CF have the value of bit.
 						mnem('bt', rm_rl, (2, 3))],   # "mw l" for 4
 				</code></pre>
 				<pre data-id="code-animation" style="font-size:12pt"><code class="hljs python" data-trim data-line-numbers>
@@ -199,7 +207,7 @@
 				<br>
 				<div class="mermaid">
 					<pre style="white-space: pre-line">
-					%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
+					%%{init: {'theme': 'white', 'themeVariables': { 'darkMode': true }}}%%
 					classDiagram
 						direction RL
 						note for CodeBlock_3 "Блок мусорного кода, который не будет вызван."
@@ -310,8 +318,8 @@
 
 
 			<section>
-				<h5 style="text-shadow: 0 0 5px green, 0 0 25px green; color: rgb(102, 255, 0);">Время для демо!</h5>
-				<pre style="font-size: 7pt; font-weight: bold; font-style: italic; text-shadow: 0 0 5px lime, 0 0 15px green; color: rgb(102, 255, 0);">
+				<h5 >Время для демо!</h5> <!--  style="text-shadow: 0 0 5px green, 0 0 25px green; color: rgb(102, 255, 0);" -->
+				<pre style="font-size: 7pt; font-weight: bolder; font-style: italic; "> <!--text-shadow: 0 0 5px lime, 0 0 15px green; color: rgb(102, 255, 0);-->
 
 ;==========================================================================================================================================================;
 ;                                                                                                                                                          ;
